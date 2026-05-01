@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, Circle, Mail, Globe, MessageCircle, Phone } from 'lucide-react';
+import { ArrowRight, Mail, Globe, MessageCircle, Phone } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Star = ({ left, delay, size, duration }: { left: string, delay: number, size: number, duration: number }) => (
