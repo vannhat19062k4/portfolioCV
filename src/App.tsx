@@ -160,7 +160,7 @@ const App = () => {
           animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
           exit={{ opacity: 0, scale: 0.98, filter: "blur(8px)" }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="flex-grow flex flex-col w-full origin-top"
+          className="flex-grow flex flex-col w-full origin-top pt-20 md:pt-0"
         >
           {currentPage === 'contact' && <ContactPage />}
           {currentPage === 'about' && <AboutPage />}
