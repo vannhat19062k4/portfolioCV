@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
-import { ArrowRight, Mail, Globe, MessageCircle, Phone } from 'lucide-react';
+import { ArrowRight, Mail, Globe, MessageCircle, Phone, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Star = ({ left, delay, size, duration }: { left: string, delay: number, size: number, duration: number }) => (
   <motion.div
     initial={{ y: "-10vh", opacity: 0, rotate: 0 }}
-    animate={{ 
+    animate={{
       y: ["-10vh", "110vh"],
-      opacity: [0, 0.4, 0.4, 0], 
-      rotate: [0, 180] 
+      opacity: [0, 0.4, 0.4, 0],
+      rotate: [0, 180]
     }}
-    transition={{ 
-      duration: duration, 
-      repeat: Infinity, 
+    transition={{
+      duration: duration,
+      repeat: Infinity,
       delay: delay,
       ease: "linear"
     }}
@@ -26,10 +26,10 @@ const Star = ({ left, delay, size, duration }: { left: string, delay: number, si
 );
 
 const FloatingStars = () => {
-  const [stars, setStars] = React.useState<{id: number, left: string, delay: number, size: number, duration: number}[]>([]);
-  
+  const [stars, setStars] = useState<{ id: number, left: string, delay: number, size: number, duration: number }[]>([]);
+
   React.useEffect(() => {
-    const newStars = Array.from({ length: 25 }).map((_, i) => ({
+    const newStars = Array.from({ length: 12 }).map((_, i) => ({
       id: i,
       left: `${Math.random() * 100}%`,
       delay: Math.random() * 10,
@@ -40,7 +40,7 @@ const FloatingStars = () => {
   }, []);
 
   return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none z-[1]">
+    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
       {stars.map(star => (
         <Star key={star.id} {...star} />
       ))}
@@ -48,43 +48,119 @@ const FloatingStars = () => {
   );
 };
 
+type PageID = 'contact' | 'about' | 'experience' | 'projects' | 'achievement';
+
 const App = () => {
-  const [currentPage, setCurrentPage] = useState<'contact' | 'about' | 'experience' | 'projects' | 'achievement'>('contact');
+  const [currentPage, setCurrentPage] = useState<PageID>('contact');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const navItems: { id: PageID; label: string }[] = [
+    { id: 'contact', label: 'Home' },
+    { id: 'about', label: 'About' },
+    { id: 'experience', label: 'Experience' },
+    { id: 'projects', label: 'Projects' },
+    { id: 'achievement', label: 'Achievement' },
+  ];
 
   return (
     <div className="min-h-screen flex flex-col relative bg-white">
       <FloatingStars />
       {/* Navigation Bar */}
-      <nav className="flex justify-between items-center px-10 py-6 relative z-50">
+      <nav className="flex justify-between items-center px-6 md:px-10 py-6 relative z-50">
         <button onClick={() => setCurrentPage('contact')} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-          <img src="/images/logo-2.png" alt="Danny Nhat Logo" className="h-12 object-contain rounded-lg" />
+          <img src="/images/logo-2.png" alt="Danny Nhat Logo" className="h-10 md:h-12 object-contain rounded-lg" />
           <span className="text-2xl font-black tracking-tighter hidden sm:inline-block">Danny Nhat.</span>
         </button>
-        <div className="hidden md:flex items-center gap-8 text-[13px] font-medium opacity-80">
-          <button onClick={() => setCurrentPage('contact')} className="hover:opacity-100 transition-opacity">Home</button>
-          <button onClick={() => setCurrentPage('about')} className="hover:opacity-100 transition-opacity">About</button>
-          <button onClick={() => setCurrentPage('experience')} className="hover:opacity-100 transition-opacity">Experience</button>
-          <button onClick={() => setCurrentPage('projects')} className="hover:opacity-100 transition-opacity">Projects</button>
-          <button onClick={() => setCurrentPage('achievement')} className="hover:opacity-100 transition-opacity">Achievement</button>
+        <div className="flex-1 max-w-xl mx-8 overflow-x-auto no-scrollbar hidden md:block">
+          <div className="flex items-center gap-1 bg-gray-50/50 p-1 rounded-full border border-gray-100 w-max">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => setCurrentPage(item.id)}
+                className={`relative px-6 py-2 text-[13px] font-bold uppercase tracking-tight transition-colors duration-300 ${currentPage === item.id ? 'text-white' : 'text-gray-500 hover:text-black'}`}
+              >
+                {currentPage === item.id && (
+                  <motion.div
+                    layoutId="nav-pill"
+                    className="absolute inset-0 bg-black rounded-full z-0"
+                    transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
+                  />
+                )}
+                <span className="relative z-10">{item.label}</span>
+              </button>
+            ))}
+          </div>
         </div>
 
-        <div className="flex items-center gap-6">
-          <a href="tel:0775419990" className="bg-black text-white px-5 py-2.5 rounded-full text-[13px] font-medium hover:opacity-80 transition-opacity flex items-center gap-2">
+        {/* Liquid Nav for Mobile (Scrollable) */}
+        <div className="md:hidden absolute left-0 right-0 top-[100%] bg-white/80 backdrop-blur-md border-b border-gray-100 py-3 overflow-x-auto no-scrollbar flex px-6 gap-2 z-40">
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setCurrentPage(item.id)}
+              className={`relative px-4 py-1.5 rounded-full text-[12px] font-bold uppercase tracking-tight whitespace-nowrap transition-all ${currentPage === item.id ? 'bg-black text-white' : 'bg-gray-100 text-gray-500'}`}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-4 md:gap-6">
+          <a href="tel:0775419990" className="bg-black text-white px-4 md:px-5 py-2 md:py-2.5 rounded-full text-[12px] md:text-[13px] font-medium hover:opacity-80 transition-opacity flex items-center gap-2">
             <Phone size={14} />
-            0775419990
+            <span className="hidden sm:inline-block">0775419990</span>
           </a>
+
+          {/* Mobile Menu Toggle */}
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="md:hidden p-2 hover:bg-gray-100 rounded-full transition-colors relative z-[60]"
+          >
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
       </nav>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed inset-0 bg-white z-[55] flex flex-col items-center justify-center gap-8 md:hidden"
+          >
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => {
+                  setCurrentPage(item.id);
+                  setIsMenuOpen(false);
+                }}
+                className={`text-3xl font-black uppercase tracking-tighter ${currentPage === item.id ? 'opacity-100' : 'opacity-40'}`}
+              >
+                {item.label}
+              </button>
+            ))}
+
+            <div className="mt-8 flex gap-6">
+              <a href="mailto:nhatngovan.work@gmail.com" className="opacity-60 hover:opacity-100 transition-opacity"><Mail size={24} /></a>
+              <a href="https://linkedin.com/in/ngo-van-nhat" target="_blank" rel="noopener noreferrer" className="opacity-60 hover:opacity-100 transition-opacity"><Globe size={24} /></a>
+              <a href="https://zalo.me/0775419990" target="_blank" rel="noopener noreferrer" className="opacity-60 hover:opacity-100 transition-opacity"><MessageCircle size={24} /></a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Render Pages Based on currentPage */}
       <AnimatePresence mode="wait">
         <motion.div
           key={currentPage}
-          initial={{ opacity: 0, scale: 1.04, filter: "blur(24px)" }}
+          initial={{ opacity: 0, scale: 1.02, filter: "blur(8px)" }}
           animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-          exit={{ opacity: 0, scale: 0.96, filter: "blur(24px)" }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="flex-grow flex flex-col w-full origin-center"
+          exit={{ opacity: 0, scale: 0.98, filter: "blur(8px)" }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="flex-grow flex flex-col w-full origin-top"
         >
           {currentPage === 'contact' && <ContactPage />}
           {currentPage === 'about' && <AboutPage />}
@@ -99,14 +175,14 @@ const App = () => {
 
 // About Page
 const AboutPage = () => (
-  <main className="flex-grow px-10 py-20">
+  <main className="flex-grow px-6 md:px-10 py-10 md:py-20">
     <div className="max-w-6xl mx-auto">
       {/* Header */}
       <div className="mb-20 grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
         {/* Left Column: Text */}
         <div className="md:col-span-7">
           <span className="opacity-60 text-[10px] font-bold uppercase tracking-[0.2em]">PORTFOLIO</span>
-          <h1 className="text-[72px] font-black mt-4 mb-6 uppercase leading-tight">
+          <h1 className="text-[40px] sm:text-[56px] md:text-[72px] font-black mt-4 mb-6 uppercase leading-tight">
             Ngô Văn Nhật
           </h1>
           <p className="text-[16px] leading-snug max-w-[320px] opacity-80 font-medium mb-4">Financial & Market Analyst với tư duy dữ liệu sắc bén</p>
@@ -281,7 +357,7 @@ const ExperiencePage = () => {
         {/* Header */}
         <div className="text-center mb-16">
           <span className="inline-block text-[11px] font-bold uppercase tracking-[0.25em] text-gray-400 mb-4">Kinh nghiệm làm việc</span>
-          <h1 className="text-[48px] md:text-[64px] font-black leading-[1.05] uppercase tracking-tight">
+          <h1 className="text-[36px] sm:text-[48px] md:text-[64px] font-black leading-[1.05] uppercase tracking-tight">
             Hành trình<br />Sự Nghiệp
           </h1>
           <p className="text-[14px] opacity-60 mt-4">Sự kết hợp giữa tư duy phân tích dữ liệu và kinh nghiệm thực chiến.</p>
@@ -351,7 +427,7 @@ const ExperiencePage = () => {
 
 // Projects Page
 const ProjectsPage = () => (
-  <main className="flex-grow px-10 py-20">
+  <main className="flex-grow px-6 md:px-10 py-10 md:py-20">
     <h1 className="text-5xl font-black mb-8">Projects</h1>
     <p className="text-lg opacity-80 max-w-3xl">
       Coming soon - Add your projects here
@@ -361,12 +437,6 @@ const ProjectsPage = () => (
 
 // Achievement Page
 const AchievementPage = () => {
-  const [expandedItems, setExpandedItems] = useState<Record<number, boolean>>({});
-
-  const toggleExpand = (index: number) => {
-    setExpandedItems(prev => ({ ...prev, [index]: !prev[index] }));
-  };
-
   const achievements = [
     {
       icon: "📰",
@@ -448,7 +518,7 @@ const AchievementPage = () => {
         {/* Header */}
         <div className="text-center mb-16">
           <span className="inline-block text-[11px] font-bold uppercase tracking-[0.25em] text-gray-400 mb-4">Thành tựu & Giải thưởng</span>
-          <h1 className="text-[48px] md:text-[64px] font-black leading-[1.05] uppercase tracking-tight">
+          <h1 className="text-[36px] sm:text-[48px] md:text-[64px] font-black leading-[1.05] uppercase tracking-tight">
             Những Cột Mốc<br />Quan Trọng
           </h1>
           <p className="text-[14px] opacity-60 mt-4">Từ mới nhất đến cũ hơn</p>
@@ -461,10 +531,9 @@ const AchievementPage = () => {
 
           {achievements.map((achievement, index) => {
             const isLeft = index % 2 === 0;
-            const isExpanded = expandedItems[index] || false;
 
             return (
-              <div key={index} className="relative mb-8 md:mb-4">
+              <div key={index} className="relative mb-8 md:mb-12">
                 {/* Card */}
                 <div className={`md:w-[calc(50%-32px)] ${isLeft ? 'md:mr-auto' : 'md:ml-auto'}`}>
                   <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
@@ -480,32 +549,22 @@ const AchievementPage = () => {
                     </div>
 
                     {/* Description */}
-                    <p className="text-gray-600 text-[13px] leading-relaxed ml-[52px]">{achievement.description}</p>
+                    <p className="text-gray-600 text-[13px] leading-relaxed ml-[52px] mb-4">{achievement.description}</p>
 
-                    {/* Expandable Image */}
-                    <div
-                      className={`overflow-hidden transition-all duration-500 ease-in-out ${isExpanded ? 'max-h-[600px] opacity-100 mt-4' : 'max-h-0 opacity-0'}`}
-                    >
-                      <div className="ml-[52px]">
-                        <img
-                          src={achievement.image}
-                          alt={achievement.title}
-                          className="w-full rounded-xl object-cover shadow-sm"
-                        />
-                      </div>
+                    {/* Image - Always visible */}
+                    <div className="ml-[52px]">
+                      <img
+                        src={achievement.image}
+                        alt={achievement.title}
+                        className="w-full rounded-xl object-cover shadow-sm"
+                      />
                     </div>
                   </div>
                 </div>
 
-                {/* Expand/Collapse Pill Button — positioned at center of timeline */}
-                <div className="flex justify-center mt-4 md:mt-0 md:absolute md:left-1/2 md:top-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2 z-10">
-                  <button
-                    onClick={() => toggleExpand(index)}
-                    className="flex items-center gap-2 bg-gray-900 hover:bg-gray-700 text-white rounded-full px-5 py-2 text-[12px] font-medium transition-all duration-300 shadow-lg hover:shadow-xl active:scale-95"
-                  >
-                    <div className={`w-2.5 h-2.5 rounded-full bg-white transition-transform duration-300 ${isExpanded ? 'scale-75' : 'scale-100'}`} />
-                    <span className="hidden sm:inline">{isExpanded ? 'Thu gọn' : 'Xem ảnh'}</span>
-                  </button>
+                {/* Timeline Dot */}
+                <div className="hidden md:flex absolute left-1/2 top-0 bottom-0 transform -translate-x-1/2 z-0 pt-10">
+                   <div className="w-3 h-3 rounded-full bg-white border-2 border-blue-500 shadow-sm relative z-10" />
                 </div>
               </div>
             );
@@ -536,12 +595,12 @@ const AchievementPage = () => {
 const ContactPage = () => (
   <>
     {/* Hero Section */}
-    <main className="flex-grow grid grid-cols-1 md:grid-cols-12 px-10 pt-10 relative overflow-hidden">
+    <main className="flex-grow grid grid-cols-1 md:grid-cols-12 px-6 md:px-10 pt-6 md:pt-10 relative overflow-hidden">
 
       {/* Left Column */}
-      <div className="md:col-span-4 z-10 space-y-12">
+      <div className="md:col-span-4 z-10 space-y-8 md:space-y-12">
         <div className="space-y-6">
-          <h1 className="text-[56px] md:text-[64px] font-black uppercase leading-[1.05] tracking-tight">
+          <h1 className="text-[36px] sm:text-[48px] md:text-[64px] font-black uppercase leading-[1.05] tracking-tight">
             TURNING <br /> DATA INTO <br /> STRATEGY.
           </h1>
           <p className="text-[16px] leading-snug max-w-[280px] opacity-80 font-medium">
@@ -555,7 +614,7 @@ const ContactPage = () => (
           </a>
         </div>
 
-        <div className="pt-10 md:pt-16 space-y-6">
+        <div className="pt-6 md:pt-16 space-y-6">
           <p className="text-[14px] leading-relaxed max-w-[300px] font-medium opacity-80">
             I’m a Market Specialist partnering with firms to optimize sales through data visualization, risk management, and competitive market research.
           </p>
@@ -596,9 +655,9 @@ const ContactPage = () => (
       </div>
 
       {/* Right Column: Contact Info -> Replaced by Impressive Stats */}
-      <div className="md:col-span-4 z-10 flex flex-col justify-between py-4 mt-10 md:mt-0">
+      <div className="md:col-span-4 z-10 flex flex-col justify-between py-4 mt-8 md:mt-0">
         <div className="text-left md:text-right space-y-3">
-          <h2 className="text-[32px] md:text-[40px] font-black tracking-tighter uppercase leading-none">
+          <h2 className="text-[28px] sm:text-[32px] md:text-[40px] font-black tracking-tighter uppercase leading-none">
             +300% <br /> PORTFOLIO ROI.
           </h2>
           <p className="text-[14px] leading-snug max-w-[260px] md:ml-auto opacity-80 font-medium">
@@ -606,8 +665,8 @@ const ContactPage = () => (
           </p>
         </div>
 
-        <div className="text-left md:text-right space-y-3 pb-10 md:pb-16 mt-10 md:mt-0">
-          <h2 className="text-[32px] md:text-[40px] font-black tracking-tighter uppercase leading-none">
+        <div className="text-left md:text-right space-y-3 pb-8 md:pb-16 mt-8 md:mt-0">
+          <h2 className="text-[28px] sm:text-[32px] md:text-[40px] font-black tracking-tighter uppercase leading-none">
             3+ NATIONAL <br /> AWARDS.
           </h2>
           <p className="text-[14px] leading-snug max-w-[260px] md:ml-auto opacity-80 font-medium">
