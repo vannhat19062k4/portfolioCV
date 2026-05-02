@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, Mail, Globe, MessageCircle, Phone, Menu, X } from 'lucide-react';
+import { ArrowRight, Mail, Globe, MessageCircle, Phone, Menu, X, FileText, Database, Leaf, BarChart3 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Star = ({ left, delay, size, duration }: { left: string, delay: number, size: number, duration: number }) => (
@@ -55,11 +55,11 @@ const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems: { id: PageID; label: string }[] = [
-    { id: 'contact', label: 'Home' },
-    { id: 'about', label: 'About' },
-    { id: 'experience', label: 'Experience' },
-    { id: 'projects', label: 'Projects' },
-    { id: 'achievement', label: 'Achievement' },
+    { id: 'contact', label: 'Trang chủ' },
+    { id: 'about', label: 'Giới thiệu' },
+    { id: 'experience', label: 'Kinh nghiệm' },
+    { id: 'projects', label: 'Dự án' },
+    { id: 'achievement', label: 'Thành tựu' },
   ];
 
   return (
@@ -426,14 +426,171 @@ const ExperiencePage = () => {
 };
 
 // Projects Page
-const ProjectsPage = () => (
-  <main className="flex-grow px-6 md:px-10 py-10 md:py-20">
-    <h1 className="text-5xl font-black mb-8">Projects</h1>
-    <p className="text-lg opacity-80 max-w-3xl">
-      Coming soon - Add your projects here
-    </p>
-  </main>
-);
+const ProjectsPage = () => {
+  const projects = [
+    {
+      id: 1,
+      title: "Dự đoán hiệu suất mạng 4G & phát hiện bất thường bằng Machine Learning",
+      description: "Ứng dụng dữ liệu viễn thông thực tế để dự đoán tốc độ truy cập người dùng và xác định các yếu tố ảnh hưởng chính.",
+      longDescription: "Hệ thống giúp phát hiện sớm các bất thường trong mạng, hỗ trợ tối ưu hóa vận hành và cải thiện trải nghiệm khách hàng.",
+      tags: ["Machine Learning", "CatBoost", "Random Forest", "Isolation Forest", "Python"],
+      caseStudy: {
+        problem: "Nhà mạng gặp nhiều khiếu nại về tốc độ 4G nhưng không xác định được nguyên nhân chính.",
+        solution: [
+          "Xử lý & làm sạch dữ liệu viễn thông thực tế",
+          "Chọn feature quan trọng bằng Random Forest",
+          "Xây dựng model dự đoán với CatBoost (R² ~0.59)",
+          "Phát hiện bất thường bằng Isolation Forest"
+        ],
+        result: [
+          "Xác định các yếu tố ảnh hưởng chính đến throughput",
+          "Dự đoán hiệu suất với sai số ~5%",
+          "Phát hiện sớm các điểm mạng bất thường"
+        ]
+      },
+      pdfUrl: "/docs/project-4g-performance.pdf", // Đường dẫn file PDF
+      icon: <Database className="text-blue-600" size={24} />
+    },
+    {
+      id: 2,
+      title: "Mặt nạ sinh học từ vi tảo Spirulina & mô hình kinh tế tuần hoàn",
+      description: "Ứng dụng mô hình kinh tế tuần hoàn kết hợp xử lý khí thải CO₂ và nuôi cấy vi tảo Spirulina để sản xuất mặt nạ sinh học.",
+      longDescription: "Giải pháp hướng đến làm đẹp bền vững, giảm thiểu tác động môi trường và tối ưu tài nguyên.",
+      tags: ["Sustainability", "Circular Economy", "Biotech", "Green Tech"],
+      caseStudy: {
+        problem: "Ngành làm đẹp tạo ra lượng lớn rác thải và chưa tận dụng hiệu quả nguồn khí thải CO₂ từ công nghiệp.",
+        solution: [
+          "Thu hồi CO₂ từ khí thải nhà máy",
+          "Nuôi cấy vi tảo Spirulina bằng CO₂ tái sử dụng",
+          "Sản xuất mặt nạ sinh học giàu dinh dưỡng",
+          "Tái chế phụ phẩm thành phân bón hữu cơ"
+        ],
+        result: [
+          "Tạo ra sản phẩm làm đẹp thân thiện môi trường",
+          "Giảm thiểu khí thải và chất thải rắn",
+          "Xây dựng mô hình kinh tế tuần hoàn khả thi",
+          "Mở ra tiềm năng thương mại trong mỹ phẩm xanh"
+        ]
+      },
+      pdfUrl: "/docs/project-bio-mask.pdf",
+      icon: <Leaf className="text-green-600" size={24} />
+    },
+    {
+      id: 3,
+      title: "Phân tích hành vi mua hàng qua Livestream E-commerce (Gen Z)",
+      description: "Nghiên cứu định lượng nhằm xác định các yếu tố ảnh hưởng đến ý định mua hàng của Gen Z trong bối cảnh livestream thương mại điện tử.",
+      longDescription: "Sử dụng mô hình PLS-SEM để đánh giá vai trò trung gian của niềm tin và các yếu tố tâm lý hành vi.",
+      tags: ["Quantitative Research", "PLS-SEM", "SmartPLS 4", "Consumer Behavior", "Gen Z"],
+      caseStudy: {
+        problem: "Livestream commerce phát triển nhanh nhưng thiếu nghiên cứu toàn diện về hành vi người dùng và niềm tin.",
+        solution: [
+          "Xây dựng mô hình nghiên cứu dựa trên TAM & TPB",
+          "Khảo sát thực tế 263 người dùng Gen Z tại TP.HCM",
+          "Phân tích dữ liệu bằng SmartPLS 4 (PLS-SEM)",
+          "Đánh giá đa chiều: Credibility, Interaction, Enjoyment..."
+        ],
+        result: [
+          "Mô hình giải thích 72.2% hành vi mua hàng (R² = 0.722)",
+          "Niềm tin (Trust) là yếu tố trung gian cốt lõi",
+          "Streamer Credibility ảnh hưởng mạnh nhất đến Trust",
+          "Xác định Subjective Norm là yếu tố tác động trực tiếp hàng đầu"
+        ]
+      },
+      pdfUrl: "/docs/project-livestream-genz.pdf",
+      icon: <BarChart3 className="text-purple-600" size={24} />
+    }
+  ];
+
+  return (
+    <main className="flex-grow px-6 md:px-10 py-10 md:py-20">
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <div className="mb-16">
+          <span className="inline-block text-[11px] font-bold uppercase tracking-[0.25em] text-gray-400 mb-4">Case Studies</span>
+          <h1 className="text-[48px] md:text-[64px] font-black leading-[1.05] uppercase tracking-tight">
+            Dự án <br /> Phân tích & AI
+          </h1>
+        </div>
+
+        {/* Projects Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {projects.map((project) => (
+            <motion.div 
+              key={project.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-white border border-gray-100 rounded-[32px] p-8 shadow-sm hover:shadow-xl transition-all duration-500 group"
+            >
+              {/* Top Row: Icon & Link */}
+              <div className="flex justify-between items-start mb-8">
+                <div className="bg-gray-50 p-4 rounded-2xl group-hover:scale-110 transition-transform">
+                  {project.icon}
+                </div>
+                <a 
+                  href={project.pdfUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="bg-black text-white px-5 py-2.5 rounded-full text-[12px] font-bold flex items-center gap-2 hover:opacity-80 transition-opacity"
+                >
+                  <FileText size={14} />
+                  XEM CHI TIẾT (PDF)
+                </a>
+              </div>
+
+              {/* Content */}
+              <h3 className="text-2xl font-black uppercase mb-4 leading-tight">{project.title}</h3>
+              <p className="text-gray-600 text-sm leading-relaxed mb-6">
+                {project.description} {project.longDescription}
+              </p>
+
+              {/* Tags */}
+              <div className="flex flex-wrap gap-2 mb-8">
+                {project.tags.map((tag, i) => (
+                  <span key={i} className="text-[10px] font-bold uppercase tracking-wider bg-gray-50 text-gray-500 px-3 py-1 rounded-full">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              {/* Mini Case Study Section */}
+              <div className="space-y-6 bg-gray-50/50 p-6 rounded-2xl border border-gray-100">
+                <div>
+                  <h4 className="text-[11px] font-bold uppercase tracking-widest text-red-500 mb-2">● BÀI TOÁN</h4>
+                  <p className="text-[13px] font-medium text-gray-800">{project.caseStudy.problem}</p>
+                </div>
+                
+                <div>
+                  <h4 className="text-[11px] font-bold uppercase tracking-widest text-blue-500 mb-2">● GIẢI PHÁP</h4>
+                  <ul className="space-y-1.5">
+                    {project.caseStudy.solution.map((item, i) => (
+                      <li key={i} className="text-[13px] font-medium text-gray-700 flex items-start gap-2">
+                        <span className="text-blue-400 mt-1">•</span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 className="text-[11px] font-bold uppercase tracking-widest text-green-500 mb-2">● KẾT QUẢ</h4>
+                  <ul className="space-y-1.5">
+                    {project.caseStudy.result.map((item, i) => (
+                      <li key={i} className="text-[13px] font-bold text-gray-900 flex items-start gap-2">
+                        <span className="text-green-500 mt-1">✓</span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </main>
+  );
+};
 
 // Achievement Page
 const AchievementPage = () => {
@@ -601,13 +758,13 @@ const ContactPage = () => (
       <div className="md:col-span-4 z-10 space-y-8 md:space-y-12">
         <div className="space-y-6">
           <h1 className="text-[36px] sm:text-[48px] md:text-[64px] font-black uppercase leading-[1.05] tracking-tight">
-            TURNING <br /> DATA INTO <br /> STRATEGY.
+            BIẾN DỮ LIỆU <br /> THÀNH <br /> CHIẾN LƯỢC.
           </h1>
           <p className="text-[16px] leading-snug max-w-[280px] opacity-80 font-medium">
-            Turning dry numbers into sharp investment insights and sustainable business growth.
+            Biến những con số khô khan thành thông tin đầu tư sắc bén và tăng trưởng kinh doanh bền vững.
           </p>
           <a href="https://zalo.me/0775419990" target="_blank" rel="noopener noreferrer" className="bg-black text-white px-6 py-3.5 rounded-full flex items-center gap-4 group w-max">
-            <span className="text-sm font-medium">Get in touch</span>
+            <span className="text-sm font-medium">Liên hệ ngay</span>
             <div className="bg-white text-black rounded-full p-1 group-hover:translate-x-1 transition-transform">
               <ArrowRight size={16} />
             </div>
@@ -616,7 +773,7 @@ const ContactPage = () => (
 
         <div className="pt-6 md:pt-16 space-y-6">
           <p className="text-[14px] leading-relaxed max-w-[300px] font-medium opacity-80">
-            I’m a Market Specialist partnering with firms to optimize sales through data visualization, risk management, and competitive market research.
+            Tôi là Chuyên gia Thị trường đồng hành cùng doanh nghiệp tối ưu hóa doanh số thông qua trực quan hóa dữ liệu, quản trị rủi ro và nghiên cứu thị trường cạnh tranh.
           </p>
           <div className="flex gap-5 opacity-80">
             {/* Email */}
@@ -658,50 +815,50 @@ const ContactPage = () => (
       <div className="md:col-span-4 z-10 flex flex-col justify-between py-4 mt-8 md:mt-0">
         <div className="text-left md:text-right space-y-3">
           <h2 className="text-[28px] sm:text-[32px] md:text-[40px] font-black tracking-tighter uppercase leading-none">
-            +300% <br /> PORTFOLIO ROI.
+            +300% <br /> LỢI NHUẬN ROI.
           </h2>
           <p className="text-[14px] leading-snug max-w-[260px] md:ml-auto opacity-80 font-medium">
-            Achieved through disciplined capital allocation and advanced technical analysis in global commodity markets.
+            Đạt được thông qua phân bổ vốn kỷ luật và phân tích kỹ thuật nâng cao trong thị trường hàng hóa toàn cầu.
           </p>
         </div>
 
         <div className="text-left md:text-right space-y-3 pb-8 md:pb-16 mt-8 md:mt-0">
           <h2 className="text-[28px] sm:text-[32px] md:text-[40px] font-black tracking-tighter uppercase leading-none">
-            3+ NATIONAL <br /> AWARDS.
+            3+ GIẢI THƯỞNG <br /> QUỐC GIA.
           </h2>
           <p className="text-[14px] leading-snug max-w-[260px] md:ml-auto opacity-80 font-medium">
-            Award-winning research in market trends and data strategy, recognized by the Ministry of Education and top-tier institutions.
+            Các nghiên cứu đạt giải thưởng về xu hướng thị trường và chiến lược dữ liệu, được Bộ Giáo dục và các tổ chức hàng đầu công nhận.
           </p>
         </div>
       </div>
     </main>
 
     {/* Bottom Bar: Partner Strip */}
-    <div className="border-t border-gray-100 py-6 overflow-hidden">
-      <div className="flex items-center gap-12 md:gap-20 animate-marquee whitespace-nowrap px-10">
-        <PartnerItem name="HOA SEN HOME" />
-        <PartnerItem name="THE BULLISH ALLIANCE" />
-        <PartnerItem name="CONCENTRIX" />
-        <PartnerItem name="MINDX" />
-        <PartnerItem name="UEF" />
-        <PartnerItem name="PYTHON &amp; SQL" />
-
-        {/* Duplicate for infinite scroll */}
-        <PartnerItem name="HOA SEN HOME" />
-        <PartnerItem name="THE BULLISH ALLIANCE" />
-        <PartnerItem name="CONCENTRIX" />
-        <PartnerItem name="MINDX" />
-        <PartnerItem name="UEF" />
-        <PartnerItem name="PYTHON &amp; SQL" />
+    <div className="border-t border-gray-100 py-8 overflow-hidden bg-white relative">
+      {/* Subtle fade effect on edges */}
+      <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-white to-transparent z-10" />
+      <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-white to-transparent z-10" />
+      
+      <div className="flex animate-marquee whitespace-nowrap">
+        {[1, 2, 3, 4].map((set) => (
+          <div key={set} className="flex items-center">
+            <PartnerItem name="HOA SEN HOME" />
+            <PartnerItem name="THE BULLISH ALLIANCE" />
+            <PartnerItem name="CONCENTRIX" />
+            <PartnerItem name="MINDX" />
+            <PartnerItem name="UEF" />
+            <PartnerItem name="PYTHON &amp; SQL" />
+          </div>
+        ))}
       </div>
     </div>
   </>
 );
 
 const PartnerItem = ({ name }: { name: string }) => (
-  <div className="flex items-center gap-12 md:gap-20">
-    <span className="text-[18px] md:text-[24px] font-black tracking-tight uppercase">{name}</span>
-    <span className="opacity-30 font-black">|</span>
+  <div className="flex items-center px-10 md:px-16">
+    <span className="text-[18px] md:text-[24px] font-black tracking-tight uppercase text-gray-900">{name}</span>
+    <span className="ml-10 md:ml-16 opacity-10 font-black text-2xl">|</span>
   </div>
 );
 
